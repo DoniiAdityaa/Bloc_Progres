@@ -16,11 +16,11 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('BLOC LISTENER')),
+      appBar: AppBar(title: Text('BLOC CONSUMER')),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          BlocListener<Counter, int>(
+          BlocConsumer<Counter, int>(
             bloc: bloccounter,
             listener: (context, state) {
               ScaffoldMessenger.of(context).showSnackBar(
@@ -37,21 +37,19 @@ class _HomePageState extends State<HomePage> {
                 return false;
               }
             },
-            child: BlocBuilder<Counter, int>(
-              bloc: bloccounter,
-              builder: (context, state) {
-                return Center(
-                  child: Text(
-                    '$state',
-                    style: const TextStyle(
-                      fontSize: 50,
-                      fontWeight: FontWeight.bold,
-                    ),
+            builder: (context, state) {
+              return Center(
+                child: Text(
+                  '$state',
+                  style: const TextStyle(
+                    fontSize: 50,
+                    fontWeight: FontWeight.bold,
                   ),
-                );
-              },
-            ),
+                ),
+              );
+            },
           ),
+          const SizedBox(height: 20),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
