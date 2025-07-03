@@ -16,30 +16,41 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('BLOC BUILDER')),
+      appBar: AppBar(title: Text('BLOC LISTENER')),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          BlocBuilder<Counter, int>(
-            // buildWhen: (previous, current) {
-            //   if (current % 2 == 1) {
-            //     return true;
-            //   } else {
-            //     return false;
-            //   }
-            // },
+          BlocListener<Counter, int>(
             bloc: bloccounter,
-            builder: (context, state) {
-              return Center(
-                child: Text(
-                  '$state',
-                  style: const TextStyle(
-                    fontSize: 50,
-                    fontWeight: FontWeight.bold,
-                  ),
+            listener: (context, state) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  duration: const Duration(seconds: 1),
+                  content: Text("sudah dijalakan: $state "),
                 ),
               );
             },
+            listenWhen: (previous, current) {
+              if (current % 2 == 0) {
+                return true;
+              } else {
+                return false;
+              }
+            },
+            child: BlocBuilder<Counter, int>(
+              bloc: bloccounter,
+              builder: (context, state) {
+                return Center(
+                  child: Text(
+                    '$state',
+                    style: const TextStyle(
+                      fontSize: 50,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                );
+              },
+            ),
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
