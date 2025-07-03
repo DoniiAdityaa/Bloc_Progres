@@ -1,56 +1,58 @@
-import 'package:belajar_stream/cubit/counter_cubit.dart';
+import 'package:belajar_stream/bloc/counter.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+  HomePage({super.key});
+
+  // final Counter mycounter = Counter(init: 0);
 
   @override
   State<HomePage> createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
-  CounterCubit cubit = CounterCubit();
-
+  Counter bloccounter = Counter(init: 0);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Cubit Apps')),
+      appBar: AppBar(title: Text('BLOC BUILDER')),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          StreamBuilder(
-            stream: cubit.stream,
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return Center(
-                  child: Text(
-                    'loading..',
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 50),
+          BlocBuilder<Counter, int>(
+            // buildWhen: (previous, current) {
+            //   if (current % 2 == 1) {
+            //     return true;
+            //   } else {
+            //     return false;
+            //   }
+            // },
+            bloc: bloccounter,
+            builder: (context, state) {
+              return Center(
+                child: Text(
+                  '$state',
+                  style: const TextStyle(
+                    fontSize: 50,
+                    fontWeight: FontWeight.bold,
                   ),
-                );
-              } else {
-                return Center(
-                  child: Text(
-                    '${snapshot.data}',
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 50),
-                  ),
-                );
-              }
+                ),
+              );
             },
           ),
-          const SizedBox(height: 20),
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               IconButton(
                 onPressed: () {
-                  cubit.kurangdata();
+                  bloccounter.kurangdata();
                 },
                 icon: const Icon(Icons.remove),
               ),
               IconButton(
                 onPressed: () {
-                  cubit.tambahdata();
+                  bloccounter.tambahdata();
                 },
                 icon: const Icon(Icons.add),
               ),
