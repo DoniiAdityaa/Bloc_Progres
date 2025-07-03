@@ -3,67 +3,77 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class HomePage extends StatefulWidget {
-  HomePage({super.key});
-
-  // final Counter mycounter = Counter(init: 0);
+  const HomePage({super.key});
 
   @override
   State<HomePage> createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
-  Counter bloccounter = Counter(init: 0);
+  // Counter blockuu = Counter();
   @override
   Widget build(BuildContext context) {
+    final counterBloc = BlocProvider.of<Counter>(context);
+
     return Scaffold(
-      appBar: AppBar(title: Text('BLOC CONSUMER')),
+      appBar: AppBar(title: Text("bloc PROVIDER")),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          BlocConsumer<Counter, int>(
-            bloc: bloccounter,
-            listener: (context, state) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  duration: const Duration(seconds: 1),
-                  content: Text("sudah dijalakan: $state "),
-                ),
-              );
-            },
-            listenWhen: (previous, current) {
-              if (current % 2 == 0) {
-                return true;
-              } else {
-                return false;
-              }
-            },
-            builder: (context, state) {
-              return Center(
-                child: Text(
-                  '$state',
-                  style: const TextStyle(
-                    fontSize: 50,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              );
-            },
-          ),
-          const SizedBox(height: 20),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              IconButton(
-                onPressed: () {
-                  bloccounter.kurangdata();
-                },
-                icon: const Icon(Icons.remove),
+              Material(
+                color: Colors.blue,
+                borderRadius: BorderRadius.circular(15),
+                child: InkWell(
+                  onTap: () {
+                    counterBloc.kurangdata();
+                  },
+                  borderRadius: BorderRadius.circular(15),
+
+                  child: SizedBox(
+                    height: 100,
+                    width: 70,
+                    child: const Center(
+                      child: Icon(Icons.remove, color: Colors.white),
+                    ),
+                  ),
+                ),
               ),
-              IconButton(
-                onPressed: () {
-                  bloccounter.tambahdata();
-                },
-                icon: const Icon(Icons.add),
+              Container(
+                height: 100,
+                width: 200,
+                color: Colors.amber,
+                child: Center(
+                  child: BlocBuilder<Counter, int>(
+                    bloc: BlocProvider.of<Counter>(context),
+                    builder: (context, state) {
+                      return Text(
+                        '$state',
+                        style: TextStyle(fontSize: 50, color: Colors.white),
+                      );
+                    },
+                  ),
+                ),
+              ),
+              Material(
+                color: Colors.blue,
+                borderRadius: BorderRadius.circular(15),
+                child: InkWell(
+                  onTap: () {
+                    counterBloc.tambahdata();
+                  },
+                  borderRadius: BorderRadius.circular(15),
+
+                  child: SizedBox(
+                    height: 100,
+                    width: 70,
+                    child: const Center(
+                      child: Icon(Icons.add, color: Colors.white),
+                    ),
+                  ),
+                ),
               ),
             ],
           ),
